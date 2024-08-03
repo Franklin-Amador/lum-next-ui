@@ -1,0 +1,12 @@
+buildx build --platform linux/amd64 -t lum-ui-dev:latest . --load
+
+docker run -d -p 3000:3000 --name my-nextjs-container lum-ui-dev:latest
+
+az login
+az acr login --name acrlumdev
+
+docker tag lum-ui-dev:latest acrlumdev.azurecr.io/lum-ui-dev:latest
+docker tag lum-ui-dev:latest acrlumdev.azurecr.io/lum-ui-dev:0.0.0
+
+docker push acrotddev.azurecr.io/lum-ui-dev:latest
+docker push acrotddev.azurecr.io/lum-ui-dev:0.0.0
