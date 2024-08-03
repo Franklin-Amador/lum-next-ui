@@ -1,0 +1,51 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy container app to Azure Web App - webapp-lum-dev
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to registry
+      uses: docker/login-action@v2
+      with:
+        registry: https://acrlumdev.azurecr.io/
+        username: ${{ secrets.AzureAppService_ContainerUsername_8302fa32102c4c6886e64be6d9e3c8e8 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_b7d6232252044d008469acfe2614001e }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: acrlumdev.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_8302fa32102c4c6886e64be6d9e3c8e8 }}/lum/ui:${{ github.sha }}
+        file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'webapp-lum-dev'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_d5d704454a5542da9d2bfcaf78a27193 }}
+        images: 'acrlumdev.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_8302fa32102c4c6886e64be6d9e3c8e8 }}/lum/ui:${{ github.sha }}'
