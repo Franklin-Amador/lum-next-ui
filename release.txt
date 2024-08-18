@@ -6,7 +6,9 @@ az login
 az acr login --name acrlumdev
 
 docker tag lum-ui-dev:latest acrlumdev.azurecr.io/lum-ui-dev:latest
-docker tag lum-ui-dev:latest acrlumdev.azurecr.io/lum-ui-dev:0.0.0
+docker tag lum-ui-dev:latest acrlumdev.azurecr.io/lum-ui-dev:0.0.1
 
-docker push acrotddev.azurecr.io/lum-ui-dev:latest
-docker push acrotddev.azurecr.io/lum-ui-dev:0.0.0
+docker push acrlumdev.azurecr.io/lum-ui-dev:latest
+docker push acrlumdev.azurecr.io/lum-ui-dev:0.0.1
+
+docker push lum-ui-dev:latest
