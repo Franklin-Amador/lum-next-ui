@@ -1,17 +1,14 @@
-
-
-"use client";  // Asegúrate de que este es un componente de cliente
+// pages/forgot-password.js
+"use client"; // Asegúrate de que el componente funcione en el lado del cliente
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
-import settings from '../../services/settings';
+import settings from '@/app/services/settings';
 
-
-const Login = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -20,42 +17,32 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${settings.domain}/login/custom`, {
+      const response = await fetch(`${settings.domain}/r/password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email }),
       });
 
-      if (response.status === 404) {
-        router.push('/404');
-        return;
-      }
-
       if (!response.ok) {
-        throw new Error('Credenciales incorrectas');
+        throw new Error('No se pudo enviar el correo electrónico de recuperación');
       }
 
-      const data = await response.json();
-
-      // Almacena el token en una cookie segura (no accesible por JavaScript)
-      Cookies.set('token', data.idToken, { expires: 1, secure: true, sameSite: 'Strict' });
-
-      // Redirige al usuario a la página principal
-      router.push('/');
+      setSuccess('Se ha enviado un correo electrónico con las instrucciones para restablecer tu contraseña.');
+      setError(null);
     } catch (err) {
       setError(err.message);
+      setSuccess(null);
     } finally {
       setLoading(false);
     }
   };
 
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800">Login</h1>
+        <h1 className="text-2xl font-bold mb-6 text-gray-800">Recuperar Contraseña</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-semibold text-gray-700">Email</label>
@@ -68,32 +55,22 @@ const Login = () => {
               className="w-full p-2 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full p-2 border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
+          {success && <p className="text-green-500 text-sm">{success}</p>}
           <button
             type="submit"
             disabled={loading}
             className={`w-full py-2 px-4 rounded-lg text-white ${loading ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-600'} transition`}
           >
-            {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+            {loading ? 'Enviando...' : 'Enviar Correo Electrónico'}
           </button>
         </form>
         <div className="mt-4 text-center">
           <a
-            href="/forgot" // Cambia esta ruta por la ruta correcta en tu aplicación
+            href="/login"
             className="text-blue-500 hover:underline"
           >
-            ¿Olvidó su contraseña?
+            Volver al login
           </a>
         </div>
       </div>
@@ -101,5 +78,4 @@ const Login = () => {
   );
 };
 
-export default Login;
-
+export default ForgotPassword;
