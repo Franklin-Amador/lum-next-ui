@@ -7,8 +7,9 @@ import InstructorCard from "./components/InstructorCard";
 import { useRouter } from 'next/navigation';
 import { getInstructores, getCategorias, getEspecialidades } from '../services/instructores';
 import { EvaluateResponse } from '../utils/requestEvaluator';
+import { HTTPError } from '../utils/HttpsError';
 
-const ITEMS_PER_PAGE_OPTIONS = [10, 20, 50];
+const ITEMS_PER_PAGE_OPTIONS = [5, 10, 20, 50];
 
 export default function Page() {
     const [instructors, setInstructors] = useState([]);

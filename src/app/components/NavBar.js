@@ -21,7 +21,7 @@ export default function Navbar() {
 
   if (isLoading) {
     return (
-      <nav className="bg-blue-600 shadow-md">
+      <nav className="bg-blue-950 shadow-md">
         <div className="max-w-full mx-auto px-4">
           <div className="flex items-center h-16">
             <Link href="/" className="ml-4 font-bold text-xl text-white">
@@ -34,7 +34,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="bg-blue-600 shadow-md">
+    <nav className="bg-blue-950 shadow-md">
       <div className="max-w-full mx-auto px-4">
         <div className="flex items-center h-16">
           {shouldShowSidebarButton && (

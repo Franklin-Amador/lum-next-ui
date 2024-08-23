@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import settings from './services/settings';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);  // Para manejar el estado de carga
@@ -33,7 +34,7 @@ export default function Home() {
       }
 
       try {
-        const response = await fetch(`https://api-lum-dev.azurewebsites.net/user`, {
+        const response = await fetch(`${settings.domain}/user`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,  // Enviar el token en los headers

@@ -30,7 +30,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body className={inter.className}>
         <SidebarProvider>
           <div className="flex h-screen bg-gray-100">

@@ -7,6 +7,8 @@ export function EvaluateResponse(response) {
             return '/login';
         case 404:
             return '/404';
+        case 500:
+            return '/500';
         default:
             return '';
     }
