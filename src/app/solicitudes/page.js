@@ -121,7 +121,7 @@ export default function Page() {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:bg-gray-400"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
             >
               Anterior
             </button>
@@ -129,7 +129,7 @@ export default function Page() {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:bg-gray-400"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
             >
               Siguiente
             </button>

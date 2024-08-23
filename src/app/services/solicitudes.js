@@ -27,10 +27,12 @@ export const getSolicitudes = async () => {
 }
 
 export const createSolicitud = async (formData) => {
+    const token = Cookies.get('token');
     const response = await fetch(`${settings.domain}/inscripcion`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
     });
@@ -48,18 +50,41 @@ export const createSolicitud = async (formData) => {
 
 export const acepptSolicitud = async (id) => {
     const token = Cookies.get('token');
-    const response = await fetch(`${settings.domain}/solicitudes/${id}/aceptar`, {
+    const response = await fetch(`${settings.domain}/solicitud`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
-        }
+        },
+        body: JSON.stringify({ Id_Solicitud: id })
     });
 
     if (!response.ok) {
         const redirectUrl = EvaluateResponse(response);
         if (redirectUrl) {
             window.location.href = redirectUrl; // Redirigir al usuario
+        }
+        throw new HTTPError(response);
+    }
+
+    return await response.json();
+}
+
+export const rejectSolicitud = async (id) => {
+    const token = Cookies.get('token');
+    const response = await fetch(`${settings.domain}/solicitudrtd`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ Id_Solicitud: id })
+    });
+
+    if (!response.ok) {
+        const redirectUrl = EvaluateResponse(response);
+        if (redirectUrl) {
+            window.location.href = redirect
         }
         throw new HTTPError(response);
     }

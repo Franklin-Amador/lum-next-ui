@@ -21,7 +21,7 @@ export default function FormularioSolicitud({ onSubmit }) {
         segundo_Apellido: "",
         mail: "",
         Descripción: "",
-        ImagenUrl: "",
+        ImagenUrl: null,
     });
     const [imageFile, setImageFile] = useState(null);
     const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
