@@ -167,11 +167,12 @@ export default function SolicitudDetails({ params }) {
       }
 
       const id = solicitudData.Id_Solicitud; // Usar el ID almacenado en el estado `solicitudData`
+      const mail =  solicitudData.email; // email de la solicitud para el correo de rechazo
 
       if (action === 'accept') {
         await acepptSolicitud(id);
       } else if (action === 'reject') {
-        await rejectSolicitud(id);
+        await rejectSolicitud(id, mail);
       }
 
       setMessage(`Solicitud ${action === 'accept' ? 'aprobada' : 'rechazada'}`);

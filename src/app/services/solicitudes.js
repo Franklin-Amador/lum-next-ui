@@ -70,15 +70,15 @@ export const acepptSolicitud = async (id) => {
     return await response.json();
 }
 
-export const rejectSolicitud = async (id) => {
+export const rejectSolicitud = async (id, mail) => {
     const token = Cookies.get('token');
-    const response = await fetch(`${settings.domain}/solicitudrtd`, {
+    const response = await fetch(`${settings.domain}/solicitud/rechazo`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ Id_Solicitud: id })
+        body: JSON.stringify({ Id_Solicitud: id , email: mail})
     });
 
     if (!response.ok) {

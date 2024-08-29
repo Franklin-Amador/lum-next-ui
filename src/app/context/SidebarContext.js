@@ -1,3 +1,5 @@
+
+// src/context/SidebarContext.js
 "use client";
 
 import React, { createContext, useState, useContext } from "react";
@@ -17,3 +19,4 @@ export function SidebarProvider({ children }) {
 }
 
 export const useSidebar = () => useContext(SidebarContext);
+

@@ -1,12 +1,38 @@
 
+// components/Sidebar.js
 "use client";
 
 import React from "react";
 import Link from "next/link";
+import Cookies from "js-cookie";
 import { useSidebar } from "../context/SidebarContext";
+import { useUser } from "../context/UserContext";
 
 export default function Sidebar() {
   const { isOpen, toggleSidebar } = useSidebar();
+  const { user } = useUser();
+
+  if (!user) {
+    return null; // No mostrar el sidebar si el usuario no está autenticado
+  }
+
+  const menuOptions = user.rol_id === 1 ? (
+    <>
+      <SidebarLink href="/" label="Inicio" />
+      <SidebarLink href="/instructores" label="Instructores" />
+      <SidebarLink href="/solicitudes" label="Solicitudes" />
+    </>
+  ) : user.rol_id === 2 ? (
+    <>
+      <SidebarLink href="/" label="Inicio" />
+      <SidebarLink href="/user" label="Perfil" />
+    </>
+  ) : (
+    <>
+      <SidebarLink href="/colaborador" label="Inicio" />
+      <SidebarLink href="/colaborador" label="Panel de Colaborador" />
+    </>
+  );
 
   return (
     <aside
@@ -28,19 +54,17 @@ export default function Sidebar() {
         </div>
         <nav>
           <ul className="space-y-2">
-            <SidebarLink href="/" label="Inicio" />
-            <SidebarLink href="/instructores" label="Instructores" />
-            <SidebarLink href="/solicitudes" label="Solicitudes" />
+            {menuOptions}
           </ul>
         </nav>
       </div>
       <button
-        onClick={() => {
-            // Elimina el token de la cookie
-            document.cookie = "token=; path=/;";
-            // Redirige al usuario a la página de inicio de sesión
-            window.location.href = "/login";
-        }}
+          onClick={() => {
+                        // Elimina el token de la cookie
+                        document.cookie = "token=; path=/;";
+                        // Redirige al usuario a la página de inicio de sesión
+                        window.location.href = "/login";
+                    }}
         className="w-full py-2 px-4 mt-auto bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300 ease-in-out"
       >
         Cerrar sesión
@@ -61,4 +85,3 @@ function SidebarLink({ href, label }) {
     </li>
   );
 }
-

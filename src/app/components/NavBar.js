@@ -1,17 +1,41 @@
-// * v3
 
 "use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
+import { useUser } from "../context/UserContext";
 
 export default function Navbar() {
   const { toggleSidebar } = useSidebar();
+  const { user } = useUser(); // Obtener información del usuario
   const [shouldShowSidebarButton, setShouldShowSidebarButton] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
+  const router = useRouter();
+
+  // Determinar el enlace de inicio según el rol del usuario
+  const [homeLink, setHomeLink] = useState("/");
+
+  useEffect(() => {
+    if (user) {
+      // Actualizar el enlace de inicio según el rol del usuario
+      switch (user.rol_id) {
+        case 1:
+          setHomeLink("/");
+          break;
+        case 2:
+          setHomeLink("/user");
+          break;
+        case 3:
+          setHomeLink("/colaborador");
+          break;
+        default:
+          setHomeLink("/login");
+      }
+    }
+  }, [user]);
 
   useEffect(() => {
     const excludedPages = ["/login", "/forgot"];
@@ -57,7 +81,7 @@ export default function Navbar() {
               </svg>
             </button>
           )}
-          <Link href="/" className="ml-4 font-bold text-xl text-white">
+          <Link href={homeLink} className="ml-4 font-bold text-xl text-white">
             Lumina
           </Link>
         </div>
@@ -65,3 +89,4 @@ export default function Navbar() {
     </nav>
   );
 }
+
